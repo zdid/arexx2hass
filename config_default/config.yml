@@ -1,0 +1,28 @@
+debug: true
+homeassistant:
+  discovery: true
+  base_topic: arexx2mqtt
+  discovery_bridge_unique_id: Arexxbridge_000001
+  topics:
+    discovery: homeassistant/device/%discovery_bridge_unique_id%/%device_unique_id%/config
+    command: "%base_topic%/%discovery_bridge_unique_id%/%device_unique_id%/%commandtype%"
+    state: "%base_topic%/%discovery_bridge_unique_id%/%device_unique_id%/state"
+    will: "%base_topic%/%discovery_bridge_unique_id%/status"
+    homeassistant_availability: homeassistant/status
+    ecoute: "%base_topic%/%discovery_bridge_unique_id%/#"
+mqtt:
+  base_topic: arexx2mqtt
+  homeassistant_enable_discovery: true
+  server: tcp://localhost
+  username: null
+  password: null
+  qos: 0
+  retain: false
+  retain_config: true
+arexx:
+  address: 192.168.1.76
+  port_dist: 80
+  httpserv_port: 49161
+  isusb: false
+  debug: true
+ 
