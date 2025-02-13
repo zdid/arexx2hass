@@ -80,7 +80,7 @@ Arexx to home assistant by MQTT bridge for RFXtrx433 devices.
 
 
 ### Configuration
-File: config.yml
+File: config.yml in data directory
 ```bibtex
 loglevel: debug  # change on HA ArexxBridge 
 homeassistant: # Paramétrage p

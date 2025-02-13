@@ -12,7 +12,6 @@ homeassistant:
     ecoute: "%base_topic%/%discovery_bridge_unique_id%/#"
 mqtt:
   base_topic: arexx2mqtt
-  homeassistant_enable_discovery: true
   server: tcp://localhost
   username: null
   password: null
