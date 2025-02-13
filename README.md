@@ -28,7 +28,7 @@ This module can be installed
 - not yet by NPM
 
 On Docker installations, use the compose.yml file below. you must adapt to your environment
-
+```bibtex
 version: "0.1.0"
 services:
 arexx2mqtt:
@@ -45,7 +45,7 @@ TZ: Europe/Paris
 restart: unless-stopped
 #devices:
 #- /dev/ttyUSB0:/dev/ttyUSB0
-
+```
 customize the contents of "volumes" and "environment".
 during the first start a copy of the configuration files are made accessible on ./data
 then you can act on the config.yml file (voir Configuration)
@@ -57,14 +57,14 @@ The devices.yml file contains the configuration data for ha of the Arexx sensors
 clic menu Admin, enter user admin password,
 menu Messenger
 in "Messengers rules" panel upload 'rulefile.txt' with the following content:
-
+```bibtex
 Vrulefile
 A1push to templogger
 B2
 C0
 E<ADDRESS OF AREXX2HASS>:49161/rules
 Ztype==$q&&id==$i&&time==$S&&v==$v&&rssi==$r&&missing==$w
-
+```
 2) otherwise (easier and not recommended) indicate by parameter the network address of the bs1000 by the parameter box of arexx2hass (address) in HA:
 parameters->Devices and services->MQTT->devices->ArexxBridge
 
