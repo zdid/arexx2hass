@@ -6,14 +6,16 @@ This is a Mqtt bridge between HomeAssistant and Arexx BS10xx and bs5xx hardware.
 Discovery mode is enabled by default, but information is only transmitted to HomeAssistant after validation.
 
 ## USAGE 
-### With ha
+### WITH HOMEASSISTANT
 Validation is done through a specific object in ha.
-This object is accessible via the menus
-settings->Devices and services->MQTT->devices->New Arexx
+This object is accessible via the menu
+ - settings->Devices and services->MQTT->devices->New Arexx
+
 2 boxes interest us:
 - configuration
 - diagnostic
-in the configuration box:
+  
+In the configuration box:
 - select the arexx device in the list
 - fill in the 'name' and 'suggested Area' fields, ex: Temperature and Living room
 - click on 'press' of 'add/modify'
@@ -29,34 +31,37 @@ This module can be installed
 
 On Docker installations, use the compose.yml file below. you must adapt to your environment
 ```bibtex
-version: "0.1.0"
 services:
-arexx2mqtt:
-image: zdid2/arexx2hass:latest
-container_name: arexx2hass
-privileged: true
-volumes:
-- ./data:/app/data
-environment:
-AREXX2HASS_MQTT_SERVER: localhost
-ARREXX2HASS_MQTT_USER: youruser
-ARREXX2HASS_MQTT_PASSWORD: passwd
-TZ: Europe/Paris
-restart: unless-stopped
-#devices:
-#- /dev/ttyUSB0:/dev/ttyUSB0
+  arexx2mqtt:
+    image: zdid2/arexx2hass:latest
+    container_name: arexx2hass
+    privileged: true
+    volumes:
+      - ./data:/app/data
+    environment:
+      AREXX2HASS_MQTT_SERVER: localhost
+      AREXX2HASS_MQTT_USER: youruser
+      AREXX2HASS_MQTT_PASSWORD: passwd
+      TZ: Europe/Paris
+    restart: unless-stopped
+    #devices:
+    #- /dev/ttyUSB0:/dev/ttyUSB0
 ```
 customize the contents of "volumes" and "environment".
-during the first start a copy of the configuration files are made accessible on ./data
+
+During the first start a copy of the configuration files are made accessible on ./data
 then you can act on the config.yml file (voir Configuration)
+ 
 The devices.yml file contains the configuration data for ha of the Arexx sensors detected.
 
-#### Installation on bs1000
+#### Installation on BS1000
 2 possibilities:
-1) recommended method: position by access to the bs1000 administrator mode, http://<ADRESSE IP BS1000>
-clic menu Admin, enter user admin password,
-menu Messenger
-in "Messengers rules" panel upload 'rulefile.txt' with the following content:
+1) recommended method: position by access to the bs1000 administrator mode,
+- http://ADRESSE_IP_ BS1000
+- clic menu 'Admin',
+- enter user admin password,
+- clic menu 'Messenger'
+- in "Messengers rules" panel upload 'rulefile.txt' with the following content:
 ```bibtex
 Vrulefile
 A1push to templogger
