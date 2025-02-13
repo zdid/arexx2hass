@@ -1,5 +1,3 @@
-# EN CONSTRUCTION
-
 # AREXX2HASS
 
 This is a Mqtt bridge between HomeAssistant and Arexx BS10xx and bs5xx hardware.
