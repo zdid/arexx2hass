@@ -1,9 +1,9 @@
-version: "1.0"
+version: "0.1.0"
 
 services: 
   arexx2mqtt:
-    image: zdid2/arexx2mqtt:0.0.1
-    container_name: arexx2mqtt
+    image: zdid2/arexx2hass:0.1.0
+    container_name: arexx2hass
     privileged: true
     build: 
       context: .
@@ -11,9 +11,9 @@ services:
         - linux/amd64
         - linux/arm64
     volumes:
-      - ../arexx2mqtt_config:/app/data
+      - ../config:/app/data
     environment:
-      AREXX2MQTT_MQTT_SERVER: localhost
+      AREXX2HASS_MQTT_SERVER: localhost
       TZ: Europe/Paris
     restart: unless-stopped 
     #devices:

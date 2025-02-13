@@ -1,12 +1,12 @@
 {
   "name": "arexx2mqtt",
   "repository": "https://github.com/zdid/arexx2mqtt",
-  "version": "1.0.0",
-  "description": "AREXX Bs1000 ou BS50x to MQTT bridge",
+  "version": "0.1.0",
+  "description": "AREXX Bs1000 ou BS50x to homeassistant  bridge (MQTT)",
   "main": "arexx2mqtt.js",
   "dependencies": {
-    "mqtt": "*",
-    "yaml": "*"
+    "mqtt": "^5.10.3",
+    "yaml": "^2.7.0"
   },
   "author": "zdid",
   "license": "Apache-2.0",
@@ -14,10 +14,10 @@
     "start": "ts-node src/index.ts"
   },
   "devDependencies": {
-      "@tsconfig/node18": "^18.2.2",
-      "@types/node": "^20.11.6",
-      "@types/object-assign-deep": "^0.4.3",
-      "ts-node": "^10.9.2",
-      "typescript": "^5.3.3"
+    "@tsconfig/node18": "^18.2.2",
+    "@types/node": "^20.11.6",
+    "@types/object-assign-deep": "^0.4.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
   }
 }
