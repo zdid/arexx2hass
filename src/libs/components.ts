@@ -1,12 +1,15 @@
-import { konst } from "./controller";
+import { KONST } from "./controller";
 import { getFileFromConfig } from "./utils";
 
 
 
 
 export class Components {
+    static components : any;
+    constructor() {
+        Components.components = getFileFromConfig(KONST.COMPONENTS_YAML);
+    }
     
-    static components = getFileFromConfig(konst.COMPONENTS_YAML);
     static get(typeDevice: string, componentName: string) {
         let comp: any;
          if(Components.components[typeDevice]) {

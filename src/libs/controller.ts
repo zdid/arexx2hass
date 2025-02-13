@@ -10,12 +10,13 @@ import { applyEnvironmentVariables, SettingConfig, SettingResult } from "./setti
 import Mqtt, { MqttEventListener, MQTTMessage } from "./Mqtt";
 import Devices from "./devices";
 import { AbstractDevice } from "./abstractdevice";
+import { Components } from "./components";
 
 const logger = new Logger(__filename)
 
 export const evenements = new EventEmitter();
 
-export const konst = {
+export const KONST = {
     CONFIG_YAML : 'config.yml',
     DEVICES_YAML: 'devices.yml',
     COMPONENTS_YAML: 'components.yml',
@@ -25,7 +26,8 @@ export const konst = {
     EVENT_MQTT: 'MQTT:',
     EVENT_RECEPTION: 'reception',
     EVENT_ANO      : 'ano',
-    EVENT_SETLOGLEVEL : 'setloglevel'
+    EVENT_SETLOGLEVEL : 'setloglevel',
+    EVENT_SETADDRESSAREXX : 'setaddressarexx'
 }
 var timeoutconfig:any  = undefined;
 var timeoutdevices: any = undefined;
@@ -52,12 +54,12 @@ export class Controller implements MqttEventListener {
     indexCommand: number;
     
     constructor(exit: any ) {
-        this.config = getFileFromConfig(konst.CONFIG_YAML);
+        this.config = getFileFromConfig(KONST.CONFIG_YAML);
         applyEnvironmentVariables(this.config);
         if (!this.config.homeassistant.discovery_bridge_unique_id) {
             this.config.homeassistant.discovery_bridge_unique_id = 'ArexxBridge_'+Math.round(Math.random()*1000000);
         }
-        evenements.emit(konst.EVENT_WRITECONFIG);
+        evenements.emit(KONST.EVENT_WRITECONFIG);
         log.setLevel(this.config.loglevel ?? 'info')
         this.devices = new Devices(this.config)
         this.exit = exit;
@@ -66,6 +68,7 @@ export class Controller implements MqttEventListener {
             .split('/')
         this.indexElementaryTopic = temp.indexOf('%device_unique_id%');
         this.indexCommand = temp.indexOf('%commandtype%');
+        new Components();
     }
 
     async start() {
@@ -75,35 +78,30 @@ export class Controller implements MqttEventListener {
         this.devices.start(this.mqttClient)
     
         await this.mqttClient.connect();
-        evenements.on(konst.EVENT_WRITECONFIG, ()=>{
-            if( ! timeoutconfig) {
-               timeoutconfig = setTimeout(()=>{
-                    writeFileToConfig(konst.CONFIG_YAML,this.config);
-                    timeoutconfig= null;
-                }, 5000);
-            }
+        evenements.on(KONST.EVENT_WRITECONFIG, ()=>{
+            writeFileToConfig(KONST.CONFIG_YAML,this.config);
         });
-        evenements.on(konst.EVENT_WRITEDEVICES, (devices)=>{
-            if( ! timeoutdevices) {
-               timeoutdevices = setTimeout(()=>{
-                    writeFileToConfig(konst.DEVICES_YAML,devices);
-                    timeoutdevices = null;
-                }, 5000);
-            }
+        evenements.on(KONST.EVENT_WRITEDEVICES, (devices)=>{
+            writeFileToConfig(KONST.DEVICES_YAML,devices);
         });
-        
-        evenements.on(konst.EVENT_RECEPTION, (evt: SettingResult) =>{
+        evenements.on(KONST.EVENT_SETADDRESSAREXX, (address)=>{
+            this.config.arexx.address = address;
+            writeFileToConfig(KONST.CONFIG_YAML,this.config);
+            this.exit(0,true);
+        });
+
+        evenements.on(KONST.EVENT_RECEPTION, (evt: SettingResult) =>{
           this.devices.setDeviceFromEvent(evt)
           evenements.emit('DEVICE:'+evt.unique_id, evt);
         });
         
-        evenements.on(konst.EVENT_SETLOGLEVEL, (loglevel : LogLevel) =>{
+        evenements.on(KONST.EVENT_SETLOGLEVEL, (loglevel : LogLevel) =>{
           this.config.loglevel = loglevel;
           log.setLevel(loglevel);
-          evenements.emit(konst.EVENT_WRITECONFIG);
+          evenements.emit(KONST.EVENT_WRITECONFIG);
         })   
         
-        evenements.on(konst.EVENT_ANO, ()=>{ this.stop()});
+        evenements.on(KONST.EVENT_ANO, ()=>{ this.stop()});
 
         // read a usb arexx bs50x
         if(this.config.arexx.isusb) {
@@ -127,7 +125,7 @@ export class Controller implements MqttEventListener {
        this.rfUsb?.stop();
        this.fromHttp?.stop();
        this.httpserv?.stop();
-       this.exit();  
+       this.exit(0);  
     }
     subscribeTopic(): string[]{
         return [AbstractDevice.getTopicCompleteName('ecoute',
@@ -149,7 +147,7 @@ export class Controller implements MqttEventListener {
             return;
         }
 
-        logger.debug(`controller on mqtt ${JSON.stringify(data)}`)
+        if(logger.isDebug())logger.debug(`controller on mqtt ${JSON.stringify(data)}`)
         evenements.emit('MQTT:'+elementaryTopic, data)
     }
     private avaibilityHomeAssistant(data: MQTTMessage) {

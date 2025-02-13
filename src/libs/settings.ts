@@ -1,7 +1,6 @@
 export interface SettingDevice {
     name: string;
     unique_id: string;
-    friendly_name: string;
     except:  { 
         humidity : boolean ; 
         temperature : boolean;

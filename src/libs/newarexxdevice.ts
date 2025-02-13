@@ -10,7 +10,6 @@ interface iNad  {
     exists_choice:  string;
     unique_id:      string;
     name:           string;
-    friendly_name:  string;
     suggested_area: string;
     type:           string;
     message:        string;
@@ -25,12 +24,12 @@ export class NewArexxDevice extends AbstractDevice {
     constructor(mqtt: Mqtt, confHass: SettingHass, devices: Devices) {
         super(mqtt,confHass,NEWAREXX,'New Arexx');
         this.devices = devices;
-        this.datanames = ['exists_choice','name','friendly_name','suggested_area', 'clicvalid', 'clicdelete','clicclear', 'message'] ;
+        this.datanames = ['exists_choice','name', 'suggested_area', 
+            'clicvalid', 'clicdelete','clicclear', 'unique_id','message'] ;
         this.choiceDevice = { 
             exists_choice:  '',
             unique_id:      '',      
             name:           '',
-            friendly_name:  '',
             suggested_area: '',
             type:           '',
             message:        ''
@@ -38,7 +37,6 @@ export class NewArexxDevice extends AbstractDevice {
         this.deviceChoisi = {
             unique_id : '',
             except: {temperature: true, humidity: true},
-            friendly_name: '',
             name:'',
             transmit:false,
             suggested_area:''
@@ -56,7 +54,6 @@ export class NewArexxDevice extends AbstractDevice {
             exists_choice:  '',
             unique_id:      '',
             name:           '',
-            friendly_name:  '',
             suggested_area: '',
             type:           '',
             message:        ''
@@ -72,7 +69,6 @@ export class NewArexxDevice extends AbstractDevice {
                 exists_choice:  device.unique_id,
                 unique_id:      device.unique_id,
                 name:           device.name,
-                friendly_name:  device.friendly_name,
                 suggested_area: device.suggested_area || '',
                 type:           device.except.humidity?'Temperature': 'Humidity',
                 message:        ''
@@ -80,14 +76,10 @@ export class NewArexxDevice extends AbstractDevice {
         }
     }
 
-    private verifDevice() {
-        let ano = '';
-        //TODO voir si controles a mettre en place
-        return ano;
-    }
+
 
     onMQTTMessage(data: MQTTMessage): void {
-        logger.debug(`reception mqtt: ${JSON.stringify(data)}`)
+        if(logger.isDebug())logger.debug(`reception mqtt: ${JSON.stringify(data)}`)
         let  fSendDiscovery = false;
         switch (data.command) {
             case 'set_exists_choice': 
@@ -98,9 +90,6 @@ export class NewArexxDevice extends AbstractDevice {
             break;
             case 'setname' :
                 this.choiceDevice.name = data.message;
-            break;
-            case 'setfriendly_name' :
-                this.choiceDevice.friendly_name = data.message;
             break;
             case 'setsuggested_area' :
                 this.choiceDevice.suggested_area = data.message;
@@ -123,13 +112,29 @@ export class NewArexxDevice extends AbstractDevice {
         }
         this.publishState();
     }
+    private verifDevice() {
+        let ano = '';
+        if(logger.isDebug())logger.debug(`device en saisie ${JSON.stringify(this.choiceDevice)}`)
+        this.choiceDevice.name =(this.choiceDevice.name??'').trim() 
+        this.choiceDevice.suggested_area =(this.choiceDevice.suggested_area??'').trim() 
+        if( ! this.choiceDevice.suggested_area) {
+            ano = "suggested area is mandatory"
+        }
+        if( ! this.choiceDevice.name) {
+            ano = "name is mandatory"
+        }
+        if(!this.choiceDevice.unique_id) {
+            ano = 'Select a choice'
+        }
+        return ano;
+    }
     private validateDevice() {
         let ano = this.verifDevice();
+        
         if(ano ) {
             this.choiceDevice.message = ano;
         } else {
             let temp : SettingDevice = {
-                friendly_name : this.choiceDevice.friendly_name,
                 name: this.choiceDevice.name,
                 suggested_area: this.choiceDevice.suggested_area,
                 transmit:true,

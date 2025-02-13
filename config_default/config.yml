@@ -1,4 +1,4 @@
-debug: true
+loglevel: debug
 homeassistant:
   discovery: true
   base_topic: arexx2mqtt

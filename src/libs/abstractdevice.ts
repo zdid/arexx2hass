@@ -5,7 +5,7 @@ import Mqtt, { MQTTMessage } from './Mqtt';
 
 import { Logger } from './logger';
 import { throws } from 'assert';
-import { evenements, konst } from './controller';
+import { evenements, KONST } from './controller';
 import { Components } from './components';
 import { SettingHass } from './settings';
 import { getArexx2HassVersion, onEvenement } from './utils';
@@ -32,7 +32,7 @@ export class AbstractDevice   { //implements MqttEventListener{
   
   
   constructor(mqtt: Mqtt,  config : SettingHass, unique_id : string, name:string = ''){
-    logger.debug(`confhass: ${config}`)
+    if(logger.isDebug())logger.debug(`confhass: ${config}`)
     this.mqtt = mqtt;
     this.topics2Subscribe = [];
     this.isFirstTime = true;
@@ -104,7 +104,7 @@ export class AbstractDevice   { //implements MqttEventListener{
      */
       this.publishDiscovery(this.json2delete)
       for( let functio of this.receiveEventForDelete) {
-        evenements.removeListener(konst.EVENT_DEVICE+this.unique_id,functio);
+        evenements.removeListener(KONST.EVENT_DEVICE+this.unique_id,functio);
       }
       setTimeout(()=>{
         this.publishDiscovery(null)
@@ -123,13 +123,14 @@ export class AbstractDevice   { //implements MqttEventListener{
       origin: AbstractDevice.getDiscoveryOrigin(),
       availability_mode: "all",
       device: {
-        identifiers: this.unique_id,
+        identifiers: [ this.unique_id ],
+        //object_id :  this.devicename || 'inconnu',
         name : this.devicename || 'inconnu',
         manufacturer : "Arexx",
         model : model,
-        sw: '1.0',
+        sw: getArexx2HassVersion(),
         sn: this.unique_id,
-        hw: '1.0',
+        //hw: '1.0',
         suggested_area: suggested_area
       },
       state_topic : this.topics.state,
@@ -143,10 +144,14 @@ export class AbstractDevice   { //implements MqttEventListener{
         continue;
       }
       component['unique_id']=this.unique_id+'_'+componentName
-      component.value_template = component.value_template || `{{ valuejson.${componentName} }}` 
-      if(! component.name) {
-        component.name = componentName
+
+      component.value_template = component.value_template || `{{ value_json.${componentName} }}` 
+      if(! component.name && component.name != '') {
+         component.name = componentName
       }
+      component.object_id = component.entity_id = (suggested_area+'_'+this.devicename+'_'+componentName+'_'+this.unique_id)
+                            .toLocaleLowerCase()
+      component.id = component.entity_id
       for(let dataname in component) {
        if(dataname.includes('topic')) {
          component[dataname] = AbstractDevice.getTopicCompleteName('command',this.unique_id,component[dataname]);
@@ -158,8 +163,8 @@ export class AbstractDevice   { //implements MqttEventListener{
      }
      json.components = components;
      if(this.isFirstTime) {
-      this.receiveEventForDelete.push(onEvenement(konst.EVENT_DEVICE+this.unique_id, this, 'onDeviceMessage'));
-      this.receiveEventForDelete.push(onEvenement(konst.EVENT_MQTT+this.unique_id, this,  'onMQTTMessage'));
+      this.receiveEventForDelete.push(onEvenement(KONST.EVENT_DEVICE+this.unique_id, this, 'onDeviceMessage'));
+      this.receiveEventForDelete.push(onEvenement(KONST.EVENT_MQTT+this.unique_id, this,  'onMQTTMessage'));
      }
      this.isFirstTime= false;
      this.publishDiscovery(json)

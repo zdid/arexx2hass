@@ -8,7 +8,7 @@
 
 import http from 'http';
 import { Logger } from './logger';
-import { evenements, konst } from './controller';
+import { evenements, KONST } from './controller';
 import { SettingArexx, SettingResult } from './settings';
 
 
@@ -49,7 +49,7 @@ export class FromHttp {
         .on('end', () => {
           // var now = Date.now();
           let result: { [s: string]: SettingResult } = {};
-          // if(logger.isdebug())logger.debug("body="+ body);
+          // if(logger.isdebug())if(logger.isDebug())logger.debug("body="+ body);
           if (body !== '') {
             while (body.indexOf('<tr>')>-1) {
               body = body
@@ -76,8 +76,8 @@ export class FromHttp {
           if ( Object.keys(result).length === 0 ) {
             this.anom += 1;
             if (this.anom > 5) {
-              evenements.emit(konst.EVENT_ANO, 
-                  `5 ano: rien dans le corps du message  bs1000`);
+              evenements.emit(KONST.EVENT_ANO, 
+                  `5 anos: rien dans le corps du message  bs1000`);
               return;
             }
           }
@@ -85,8 +85,8 @@ export class FromHttp {
           for (num of Object.keys(result)) {
             result[num].date = new Date((result[num].valtime+946684800)*1000);
             result[num].unique_id = 'Arexx-'+num;
-            //		logger.debug("body de ",num,result[num])
-            evenements.emit(konst.EVENT_RECEPTION, result[num]);
+            //		if(logger.isDebug())logger.debug("body de ",num,result[num])
+            evenements.emit(KONST.EVENT_RECEPTION, result[num]);
             this.anom = 0;
           }
         });
@@ -110,7 +110,7 @@ export class FromHttp {
           logger.warn(`this.anomalie sur le get , ${this.anom}, ${err}`);
           if (this.anom > 3) {
             // eslint-disable-next-line max-len
-            evenements.emit(konst.EVENT_ANO, `3 ano: on get ${this.address}:${this.port} to access http bs1000`);
+            evenements.emit(KONST.EVENT_ANO, `3 ano: on get ${this.address}:${this.port} to access http bs1000`);
           }
         });
   }

@@ -5,7 +5,7 @@ import { BridgeDevice } from './bridgedevice';
 import { NewArexxDevice } from './newarexxdevice';
 import Mqtt from './Mqtt';
 import { getFileFromConfig, writeFileToConfig } from './utils';
-import { evenements, konst } from './controller';
+import { evenements, KONST } from './controller';
 
 const logger = new Logger(__filename);
 
@@ -75,7 +75,7 @@ export class Devices {
     }
     
     deleteDevice(numdevice: string) {
-        logger.debug(`deleteDevice de devices ${numdevice}`)
+        if(logger.isDebug())logger.debug(`deleteDevice de devices ${numdevice}`)
         if(this.devicesParms) {
             delete this.devicesParms[numdevice];
             this.isModifiedDevices = true;
@@ -88,9 +88,9 @@ export class Devices {
     }
 
     private loadDevices(): void {
-        logger.debug("loaddevives")
-        let tempDevicesParms : any = getFileFromConfig(konst.DEVICES_YAML)
-        logger.debug(`loaddevices ${JSON.stringify(tempDevicesParms)}`)
+        if(logger.isDebug())logger.debug("loaddevives")
+        let tempDevicesParms : any = getFileFromConfig(KONST.DEVICES_YAML)
+        if(logger.isDebug())logger.debug(`loaddevices ${JSON.stringify(tempDevicesParms)}`)
         if(tempDevicesParms === null || tempDevicesParms === undefined) {
             tempDevicesParms = {};
         }
@@ -99,13 +99,13 @@ export class Devices {
             for(let dev of tempDevicesParms) {
                 this.devicesParms[dev.unique_id] = dev;
             }
-            writeFileToConfig(konst.DEVICES_YAML,this.devicesParms)
+            evenements.emit(KONST.EVENT_WRITEDEVICES, this.devicesParms )
         } else {
             this.devicesParms = tempDevicesParms;
         }
         this.devices = {};
         for(let ident in this.devicesParms) {
-            logger.debug(` read ident ${ident} `)
+            if(logger.isDebug())logger.debug(` read ident ${ident} `)
             this.addDevice(this.devicesParms[ident]);
         }
     }
@@ -120,7 +120,7 @@ export class Devices {
         }
         if (this.isModifiedDevices === true) {
             logger.info(`Saving devices to file devices.yml`);
-            evenements.emit(konst.EVENT_WRITEDEVICES, this.devices)
+            evenements.emit(KONST.EVENT_WRITEDEVICES, this.devicesParms)
           } 
     }
 
@@ -130,7 +130,6 @@ export class Devices {
                 let dev : SettingDevice = {
                     unique_id : evt.unique_id,
                     name:'',
-                    friendly_name: '',
                     transmit: false,
                     suggested_area: '', 
                     except: {
@@ -155,15 +154,15 @@ export class Devices {
     }
  
     async publishAllDiscovery() {
-        logger.debug('publishAllDiscovery')
+        if(logger.isDebug())logger.debug('publishAllDiscovery')
         if(this.publishWait) return;
         this.publishWait = true;
-        logger.debug(`publishAllDiscovery de bridge`)
+        if(logger.isDebug())logger.debug(`publishAllDiscovery de bridge`)
         this.bridgeDiscovery?.publishAllDiscovery();
-        logger.debug(`publishAllDiscovery de newarexx`)
+        if(logger.isDebug())logger.debug(`publishAllDiscovery de newarexx`)
         this.newArexxDevice?.publishAllDiscovery();
         for(let ident in this.devices) {
-            logger.debug(`publishAllDiscovery de ${ident}`)
+            if(logger.isDebug())logger.debug(`publishAllDiscovery de ${ident}`)
             this.devices[ident].publishAllDiscovery();
         }
         // logger.info("publishAllDiscovery avant new onoff virtual")

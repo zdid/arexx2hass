@@ -9,7 +9,7 @@ import path    from 'path'
 import { Logger } from './logger';
 import { Request, Response } from 'express-serve-static-core';
 import { ParsedQs } from 'qs';
-import { evenements, konst } from './controller';
+import { evenements, KONST } from './controller';
 import { SettingArexx, SettingResult } from './settings';
 const logger = new Logger(__filename)
 
@@ -59,7 +59,7 @@ export class HttpServ {
       let parms: any = this.traitReceptionTemp(req);
       log.debug(`"envoi app / de reception ",${parms}`)
       parms.date = 
-      setImmediate(()=>{evenements.emit(konst.EVENT_RECEPTION,parms)})
+      setImmediate(()=>{evenements.emit(KONST.EVENT_RECEPTION,parms)})
       res.send("ok");
    }
 

@@ -4,8 +4,8 @@ device:
     device_class: temperature
     state_class: measurement
     icon: mdi:thermometer
-    name: Température
-    unit: °C
+    name: ""
+    unit_of_measurement: °C
     value_template: "{{ value_json.value }}"
   date:
     platform: sensor
@@ -13,14 +13,14 @@ device:
     entity_category: diagnostic
     icon: mdi:date
     name: date
-    unit: ""
+    unit_of_measurement: ""
   dbm:
     platform: sensor
     device_class: signal_strength
     entity_category: diagnostic
     icon: mdi:dbm
-    name: Dbm
-    unit: dbm
+    name: dBm
+    unit_of_measurement: dBm
   __default:
     platform: sensor
     enabled_by_default: true
@@ -31,13 +31,13 @@ device:
     entity_category: diagnostic
     icon: mdi:signal
     name: Rssi
-    unit_of_measurement: '%'
+    unit_of_measurement: "%"
   humidity:
     platform: sensor
     device_class: humidity
     state_class: measurement
     icon: mdi:humidity
-    name: Humidity
+    name: ""
     unit_of_measurement: "%RH"
     value_template: "{{ value_json.value }}"
 bridge:
@@ -47,6 +47,13 @@ bridge:
     name: Receiver
     enabled_by_default: true
     value_template: "{{ value_json.receivertype }}"
+  address:
+    platform: text
+    entity_category: config
+    name: Bs1000 address 
+    enabled_by_default: true
+    value_template: "{{ value_json.address }}"
+    command_topic: setaddress
   version:
     name: 'Version Arexx2Mqtt:' 
     entity_category: diagnostic
@@ -90,13 +97,13 @@ newarexx:
       - 'Arexx-8266'
   unique_id:  
     platform: sensor
-    entity_category: config
+    entity_category: diagnostic
     name: unique id
     enabled_by_default: true
     value_template: "{{ value_json.unique_id }}"
   type:  
     platform: sensor
-    entity_category: config
+    entity_category: diagnostic
     name: Type
     enabled_by_default: true
     value_template: "{{ value_json.type }}"
@@ -107,13 +114,7 @@ newarexx:
     enabled_by_default: true
     value_template: "{{ value_json.name }}"
     command_topic: setname
-  friendly_name:  
-    platform: text
-    entity_category: config
-    name: H) friendly name
-    enabled_by_default: true
-    value_template: "{{ value_json.friendly_name }}"
-    command_topic: setfriendly_name
+
   suggested_area:
     platform: text
     entity_category: config

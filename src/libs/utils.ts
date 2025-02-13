@@ -40,7 +40,7 @@ export function getFileFromConfig(fileName:string) : any {
       from = temp
   }
   // ne copie pas si existe déjà
-  logger.debug(`getFileFromConfig copy de : '${from}' sur '${cible}'` )
+  if(logger.isDebug())logger.debug(`getFileFromConfig copy de : '${from}' sur '${cible}'` )
   try {
       copyFileSync(from,cible, constants.COPYFILE_EXCL);
   } catch (error) {
@@ -52,11 +52,12 @@ export function getFileFromConfig(fileName:string) : any {
 
 export function writeFileToConfig(fileName: string, data: Object) {
   let cible  = (process.env.AREXX2HASS_DATA_PATH ?? "/app/data")+'/'+fileName
+  let valyaml:any;
   try {
-      const valyaml = YAML.stringify(data);
+      valyaml = YAML.stringify(data);
       writeFileSync(cible , valyaml, 'utf8');
   } catch (error) {
-      logger.error(`write  file ${cible} failed , ${error}`)            
+      logger.error(`error on yaml stringify ${data} or write  file ${cible} failed: ${error}`)            
   }
 }
 
@@ -69,7 +70,7 @@ export function writeFileToConfig(fileName: string, data: Object) {
  */
 // export function getTopicFrom_desuet(topicName:string , sensorDesc: any, deviceConf?:any) {
 //   let conf ='';
-//   logger.debug(`topicName', ${topicName}`);
+//   if(logger.isDebug())logger.debug(`topicName', ${topicName}`);
 //   if (config.mqtt.topics[topicName].startsWith('/') ) {
 //     conf = config.mqtt.base_topic;
 //   }
