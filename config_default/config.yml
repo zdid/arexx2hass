@@ -1,8 +1,8 @@
 loglevel: debug
 homeassistant:
   discovery: true
-  base_topic: arexx2mqtt
-  discovery_bridge_unique_id: Arexxbridge_000001
+  base_topic: arexx2hass
+  discovery_bridge_unique_id: ArexxBridge_000001
   topics:
     discovery: homeassistant/device/%discovery_bridge_unique_id%/%device_unique_id%/config
     command: "%base_topic%/%discovery_bridge_unique_id%/%device_unique_id%/%commandtype%"
