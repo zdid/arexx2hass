@@ -68,6 +68,7 @@ C0
 E<ADDRESS OF AREXX2HASS>:49161/rules
 Ztype==$q&&id==$i&&time==$S&&v==$v&&rssi==$r&&missing==$w
 ```
+A template of the rulefile.txt file is present in the data directory after the first boot
 2) otherwise (easier and not recommended) indicate by parameter the network address of the bs1000 by the parameter box of arexx2hass (address) in HA:
 - parameters->Devices and services->MQTT->devices->ArexxBridge
 

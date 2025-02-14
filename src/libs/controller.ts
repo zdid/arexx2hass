@@ -5,7 +5,7 @@ import { Logger, LogLevel } from "./logger";
 import { RfUsb } from './rfusb'
 import { FromHttp } from './fromhttp';
 import { HttpServ } from './httpserv';
-import { getFileFromConfig,  writeFileToConfig } from "./utils";
+import { copyRulefile, getFileFromConfig,  writeFileToConfig } from "./utils";
 import { applyEnvironmentVariables, SettingConfig, SettingResult } from "./settings";
 import Mqtt, { MqttEventListener, MQTTMessage } from "./Mqtt";
 import Devices from "./devices";
@@ -69,6 +69,7 @@ export class Controller implements MqttEventListener {
         this.indexElementaryTopic = temp.indexOf('%device_unique_id%');
         this.indexCommand = temp.indexOf('%commandtype%');
         new Components();
+        copyRulefile();
     }
 
     async start() {

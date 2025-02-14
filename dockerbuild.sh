@@ -1,7 +1,8 @@
 #/bin/sh
-VERSION='0.1.0'
+VERSION='0.1.1'
+export VERSION
 tsc
-docker build -t zdid2/arexx2hass:${VERSION} .
+docker compose build 
 docker push zdid2/arexx2hass:${VERSION}
 docker tag zdid2/arexx2hass:${VERSION} zdid2/arexx2hass:latest
 docker push zdid2/arexx2hass:latest

@@ -61,6 +61,18 @@ export function writeFileToConfig(fileName: string, data: Object) {
   }
 }
 
+export function copyRulefile() {
+  let fileName = "modelrulefile.txt"
+  let cible  = (process.env.AREXX2HASS_DATA_PATH ?? "/app/data")+'/'+fileName
+  let from = path.resolve(path.join(__dirname,"..","..","linux",fileName));
+  try {
+    copyFileSync(from,cible, constants.COPYFILE_EXCL);
+    logger.info(` copy from ${from} to ${cible}`)   
+  } catch (error) {
+      logger.info(` file ${cible} exists  `)   
+  }
+} 
+
 /**
  * return topicname completed
  * @param {String} topicName topic name is in config

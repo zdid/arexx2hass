@@ -1,8 +1,8 @@
-version: "0.1.0"
+
 
 services: 
   arexx2mqtt:
-    image: zdid2/arexx2hass:0.1.0
+    image: zdid2/arexx2hass:${VERSION}
     container_name: arexx2hass
     privileged: true
     build: 
