@@ -8,10 +8,9 @@ services:
     build: 
       context: .
       platforms:
-        - "linux/x86"
         - "linux/amd64"
         - "linux/arm64" 
-        - "linux/arm"
+        - "linux/armhf"
     volumes:
       - ../config:/app/data
     environment:
