@@ -24,26 +24,26 @@ Why enter this data? to recognize them immediately in the arexx2hass settings (c
 ### Installation
 This module can be installed
 - either directly by git cloning on your machine
-- or by docker (installation recommended) on x86/amd64 or arm64 machines. There is no version for armv7 at the moment.
-- not yet by NPM
+- or by docker (installation recommended) on amd64, arm64 machines, armv7, not for armv6 (rpi1) 
+- not yet by NPM (for now)
 
 On Docker installations, use the compose.yml file below. you must adapt to your environment
 ```bibtex
 services:
-  arexx2mqtt:
+  arexx2hass:
     image: zdid2/arexx2hass:latest
     container_name: arexx2hass
     privileged: true
     volumes:
       - ./data:/app/data
+    network_mode: host
     environment:
       AREXX2HASS_MQTT_SERVER: localhost
       AREXX2HASS_MQTT_USER: youruser
       AREXX2HASS_MQTT_PASSWORD: passwd
       TZ: Europe/Paris
     restart: unless-stopped
-    #devices:
-    #- /dev/ttyUSB0:/dev/ttyUSB0
+    net
 ```
 customize the contents of "volumes" and "environment".
 
@@ -55,7 +55,7 @@ The devices.yml file contains the configuration data for ha of the Arexx sensors
 #### Installation on BS1000
 2 possibilities:
 1) recommended method: position by access to the bs1000 administrator mode,
-- http://ADRESSE_IP_ BS1000
+- http://ADRESSE_IP_BS1000
 - clic menu 'Admin',
 - enter user admin password,
 - clic menu 'Messenger'
@@ -69,13 +69,15 @@ E<ADDRESS OF AREXX2HASS>:49161/rules
 Ztype==$q&&id==$i&&time==$S&&v==$v&&rssi==$r&&missing==$w
 ```
 A template of the rulefile.txt file is present in the data directory after the first boot
+
 2) otherwise (easier and not recommended) indicate by parameter the network address of the bs1000 by the parameter box of arexx2hass (address) in HA:
 - parameters->Devices and services->MQTT->devices->ArexxBridge
 
 #### Installation with a BS5xx
-The BS5xx must be connected to a rpi with an operating system that recognizes the BS5xx (bullseye) (the most recent ones do not recognize it (incident to submit to Arexx))
+The BS5xx must be connected to a rpi (32 bits, arm/v6 or arm/V7, not on arm64) (RPI 3 4 5 on arm64 distribution not run) (incident is submit to Arexx))
 On the arexx site you have to download the specific module rf_usb_http_rpi_0_6 https://arexx.nl/com-old/templogger/html/nl/software.php (also present in the linux directory). See on github
-as for the BS1xxx the rulefile.txt file is necessary but also the device.xml file.
+
+As for the BS1xxx the rulefile.txt file is necessary but also the device.xml file.
 When Arexx will have solved the problem of assigning the USB device, the module can be executed directly on the docker.
 Arexx to home assistant by MQTT bridge for RFXtrx433 devices. 
 
@@ -83,11 +85,11 @@ Arexx to home assistant by MQTT bridge for RFXtrx433 devices.
 ### Configuration
 File: config.yml in data directory
 ```bibtex
-loglevel: debug  # change on HA ArexxBridge 
-homeassistant: # Paramétrage p
+loglevel: debug  # change on HA ArexxBridge debug info warn error 
+homeassistant: # Parms for Home assistant 
   discovery: true  # change on HA ArexxBridge 
   base_topic: arexx2hass
-  discovery_bridge_unique_id: ArexxBridge_000001 # for arexx2hass multiple, change here
+  discovery_bridge_unique_id: ArexxBridge_000001 
   topics: # Do not modify topic templates
     discovery: homeassistant/device/%discovery_bridge_unique_id%/%device_unique_id%/config
     command: "%base_topic%/%discovery_bridge_unique_id%/%device_unique_id%/%command\
@@ -99,8 +101,8 @@ homeassistant: # Paramétrage p
 mqtt:
   base_topic: arexx2hass
   server: ftp://localhost:1883 # mqtt server
-  username: null # Specify username to access Mqtt
-  password: null # Specify password to access Mqtt
+  username: username_of_Mqtt_server # specify username to access Mqtt
+  password: your_password # Specify password to access Mqtt
   qos: 0
   retain: false # todo
   retain_config: true # todo

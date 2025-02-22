@@ -12,7 +12,7 @@ export class ArexxInfo {
 
 export class DeviceEntity {
   public manufacturer: string = "AREXX";
-  public via_device: string = 'arexx_bridge';
+  public via_device: string = 'AarexxBridge';
 
   constructor(
     public identifiers: string[] = ["Arexx"],

@@ -1,12 +1,13 @@
-FROM node:18-alpine
+FROM node:22-bookworm-slim
 
 WORKDIR /app
 COPY package.json .
-RUN npm install
+
+RUN yarn install --production
 COPY ./dist ./dist
 COPY ./config_default ./config_default 
 COPY ./linux ./linux
-COPY ./src ./src
+COPY ./src ./s
 COPY ./LICENSE .
 
 CMD ["node", "dist/index.js"]

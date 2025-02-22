@@ -24,7 +24,7 @@ export class BridgeDevice extends AbstractDevice{
 
 
     constructor(mqtt: Mqtt, config: SettingConfig) {
-        super(mqtt,config.homeassistant,config.homeassistant.discovery_bridge_unique_id, 'Bridge');
+        super(mqtt,config.homeassistant,config.homeassistant.discovery_bridge_unique_id, 'ArexxBridge');
         this.configG = config;
         this.confHass = config.homeassistant;
         this.mqtt = mqtt;

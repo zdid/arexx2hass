@@ -55,7 +55,7 @@ bridge:
     value_template: "{{ value_json.address }}"
     command_topic: setaddress
   version:
-    name: 'Version Arexx2Mqtt:' 
+    name: 'Version Arexx2hass:' 
     entity_category: diagnostic
     platform: sensor
     enabled_by_default: true

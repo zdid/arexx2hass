@@ -29,7 +29,7 @@ export class HttpServ {
    }
 
    traitReceptionTemp(req:any ) {
-    log.debug(`"params", ${req.body}`)
+    if(logger.isDebug())logger.debug(`"params", ${JSON.stringify(req.body)}`)
     let typecapt = req.body.type
     let value = parseFloat(req.body.v).toFixed(1);
     let dbm = parseFloat(req.body.rssi);
@@ -51,14 +51,13 @@ export class HttpServ {
            unit: unit,
            valtime : valtime
    };
-   log.debug(`'traitReceptionTemp', ${parms}`);
+   if(logger.isDebug())if(logger.isDebug())logger.debug(`'traitReceptionTemp', ${parms}`);
    return parms;
    }
    traitAll(req: Request<{}, any, any, ParsedQs, Record<string, any>>,res: Response<any, Record<string, any>, number>) {
       this.lastreceive=Date.now()
       let parms: any = this.traitReceptionTemp(req);
-      log.debug(`"envoi app / de reception ",${parms}`)
-      parms.date = 
+      if(logger.isDebug())logger.debug(`"envoi app / de reception ",${JSON.stringify(parms)}`)
       setImmediate(()=>{evenements.emit(KONST.EVENT_RECEPTION,parms)})
       res.send("ok");
    }
@@ -68,7 +67,7 @@ export class HttpServ {
    async start() {
       this.app.set('port',  this.confarexx.httpserv_port || 49161);
       http.createServer(this.app).listen(this.app.get('port'), () => {
-         log.info('Express server listening on port ' + this.app.get('port'));
+         logger.info('Express server listening on port ' + this.app.get('port'));
       });
       this.app.all('/', (req: any, res: any) => {
          this.traitAll(req,res);
@@ -80,6 +79,6 @@ export class HttpServ {
    }
 
    stop() {
-      log.info('Express server stop required ');
+      logger.info('Express server stop required ');
    }
 }

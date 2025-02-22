@@ -106,17 +106,21 @@ export class Controller implements MqttEventListener {
 
         // read a usb arexx bs50x
         if(this.config.arexx.isusb) {
+            log.info(`start httpserv ${this.config.arexx.isusb}`)
             this.httpserv = new HttpServ(this.config.arexx);
             this.httpserv.start();
+            log.info(`start rfusb `)
             this.rfUsb = new RfUsb(this.config.arexx);
             this.rfUsb.start();
         } else
         // read bs1000 or bs5xx remote
         if(this.config.arexx.address) {
             // read from http 
+            log.info(`start fromhttp ${this.config.arexx.address}`)
             this.fromHttp = new FromHttp(this.config.arexx);
             this.fromHttp.start();
         } else {
+            log.info(`start httpserv ${this.config.arexx.address}`)
             this.httpserv = new HttpServ(this.config.arexx);
             this.httpserv.start();  
         }

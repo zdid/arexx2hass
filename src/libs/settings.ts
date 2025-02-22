@@ -60,13 +60,25 @@ export interface SettingConfig {
     arexx: SettingArexx;
 }
 export function applyEnvironmentVariables(settings: SettingConfig): void {
+    const generalEnvVars = [
+        { env: "AREXX2HASS_LOG_LEVEL", props: "loglevel"},
+        { env: "AREXX2HASS_LOGLEVEL" , props: "loglevel"}
+    ]
+
+    generalEnvVars.forEach( envEntry => {
+        if (process.env[envEntry.env]) {
+            if(settings !== undefined){ 
+                // @ts-ignore
+                settings[envEntry.props] = process.env[envEntry.env];
+            }
+        }
+    });
+
     const mqttEnvVars = [
         {env: "AREXX2HASS_MQTT_SERVER", props: "server"},
         {env: "AREXX2HASS_MQTT_USERNAME", props: "username"},
         {env: "AREXX2HASS_MQTT_PASSWORD", props: "password"},
         {env: "AREXX2HASS_MQTT_CLIENT_ID", props: "client_id"}];
-
-        
 
     mqttEnvVars.forEach( envEntry => {
         if (process.env[envEntry.env]) {
@@ -76,6 +88,4 @@ export function applyEnvironmentVariables(settings: SettingConfig): void {
             }
         }
     });
-
-    
 }

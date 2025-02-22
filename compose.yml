@@ -1,15 +1,17 @@
 
 
 services: 
-  arexx2mqtt:
+  arexx2hass:
     image: zdid2/arexx2hass:${VERSION}
     container_name: arexx2hass
     privileged: true
     build: 
       context: .
       platforms:
-        - linux/amd64
-        - linux/arm64
+        - "linux/x86"
+        - "linux/amd64"
+        - "linux/arm64" 
+        - "linux/arm"
     volumes:
       - ../config:/app/data
     environment:

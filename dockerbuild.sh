@@ -1,5 +1,5 @@
 #/bin/sh
-VERSION='0.1.1'
+VERSION=`cat package.json | jq -r .version`
 export VERSION
 tsc
 docker compose build 
