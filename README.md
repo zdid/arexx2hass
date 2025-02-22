@@ -5,7 +5,7 @@ Discovery mode is enabled by default, but information is only transmitted to Hom
 
 ## USAGE 
 ### WITH HOMEASSISTANT
-Validation is done through a specific object in ha.
+Validation is done through a specific object in home assistant.
 This object is accessible via the menu
  - settings->Devices and services->MQTT->devices->New Arexx
 
