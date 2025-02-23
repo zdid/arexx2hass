@@ -75,11 +75,18 @@ A template of the rulefile.txt file is present in the data directory after the f
 
 #### Installation with a BS5xx
 The BS5xx must be connected to a rpi (32 bits, arm/v6 or arm/V7, not on arm64) (RPI 3 4 5 on arm64 distribution not run) (incident is submit to Arexx))
-On the arexx site you have to download the specific module rf_usb_http_rpi_0_6 https://arexx.nl/com-old/templogger/html/nl/software.php (also present in the linux directory). See on github
+On the arexx site you have to download the specific module rf_usb_http_rpi_0_6 https://arexx.nl/com-old/templogger/html/nl/software.php (also present in the linux directory). 
 
 As for the BS1xxx the rulefile.txt file is necessary but also the device.xml file.
-When Arexx will have solved the problem of assigning the USB device, the module can be executed directly on the docker.
-Arexx to home assistant by MQTT bridge for RFXtrx433 devices. 
+
+From linux directory, copy rf_usb_http_rpi_0_6 to /root directory of rpi.
+Also copy rf.service.
+
+You modify the file rulefile.txt in rf_usb_http_rpi_0_6 directory, (line E) set address of arexx2hass 
+
+Pass command:
+\# systemctl enable /root/rf.service
+\# systemctl start rf 
 
 
 ### Configuration

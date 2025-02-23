@@ -1,7 +1,7 @@
 {
   "name": "arexx2hass",
   "repository": "https://github.com/zdid/arexx2hass",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "AREXX Bs1000 ou BS50x to homeassistant  bridge (MQTT)",
   "main": "arexx2hass.js",
   "dependencies": {
