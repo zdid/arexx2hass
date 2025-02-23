@@ -1,8 +1,8 @@
 process.env['AREXX2HASS_DATA_PATH'] = '/home/didier/Developpements/workspace6/arexx2hass_config';
-process.env['AREXX2HASS_LOG_LEVEL'] = 'debug';
-process.env['AREXX2HASS_MQTT_SERVER'] =  'ftp://localhost:1883'
-process.env['AREXX2HASS_MQTT_USERNAME'] = ''
-process.env['AREXX2HASS_MQTT_PASSWORD'] = ''
+process.env['AREXX2HASS_LOG_LEVEL'] = 'info';
+process.env['AREXX2HASS_MQTT_SERVER'] =  'ftp://homeassistant.local:1883'
+process.env['AREXX2HASS_MQTT_USERNAME'] = 'dimotic'
+process.env['AREXX2HASS_MQTT_PASSWORD'] = 'G2filles'
 console.log('fin process')
 
 let args = process.argv;

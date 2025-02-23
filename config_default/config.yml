@@ -5,8 +5,7 @@ homeassistant:
   discovery_bridge_unique_id: ArexxBridge_000001
   topics:
     discovery: homeassistant/device/%discovery_bridge_unique_id%/%device_unique_id%/config
-    command: "%base_topic%/%discovery_bridge_unique_id%/%device_unique_id%/%command\
-      type%"
+    command: "%base_topic%/%discovery_bridge_unique_id%/%device_unique_id%/%commandtype%"
     state: "%base_topic%/%discovery_bridge_unique_id%/%device_unique_id%/state"
     will: "%base_topic%/%discovery_bridge_unique_id%/status"
     homeassistant_availability: homeassistant/status
