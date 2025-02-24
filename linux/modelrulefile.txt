@@ -1,6 +1,0 @@
-Vrulefile
-A1push to templogger
-B2
-C0
-E192.168.1.53:49161/rules
-Ztype==$q&&id==$i&&time==$S&&v==$v&&rssi==$r&&missing==$w

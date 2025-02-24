@@ -62,9 +62,9 @@ export function writeFileToConfig(fileName: string, data: Object) {
 }
 
 export function copyRulefile() {
-  let fileName = "modelrulefile.txt"
+  let fileName = "rulefile.txt"
   let cible  = (process.env.AREXX2HASS_DATA_PATH ?? "/app/data")+'/'+fileName
-  let from = path.resolve(path.join(__dirname,"..","..","linux",fileName));
+  let from = path.resolve(path.join(__dirname,"..","..",'rf_usb_http_rpi_0_6',fileName));
   try {
     copyFileSync(from,cible, constants.COPYFILE_EXCL);
     logger.info(` copy from ${from} to ${cible}`)   

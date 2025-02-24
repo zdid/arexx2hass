@@ -1,5 +1,5 @@
 /**
-* gere le fichier rf_usb_http_rpi_06
+* gere le fichier rf_usb_http_rpi_0_6
 * TODO faut voir si il faut positionner 
 * faut il changer la valeur dans le fichier rulefile.txt de localhost 
 * et faut il le positionner a coté de l'exécutable
@@ -14,9 +14,9 @@ const logger = new Logger(__filename)
 const log = logger;
 
 export class RfUsb {
-  pathRfusb = path.join(__dirname,"..","linux","rf_usb_http_rpi_0_6","rf_usb_http.elf");
-  pathcwd = path.join(__dirname,"..","linux","rf_usb_http_rpi_0_6");
-  rulesfile = path.join(__dirname,"..","linux","rf_usb_http_rpi_0_6","rulefile.txt");
+  pathRfusb = path.join(__dirname,"..","rf_usb_http_rpi_0_6","rf_usb_http.elf");
+  pathcwd = path.join(__dirname,"..","rf_usb_http_rpi_0_6");
+  rulesfile = path.join(__dirname,"..","rf_usb_http_rpi_0_6","rulefile.txt");
   command: ChildProcessWithoutNullStreams | undefined;
   constructor(confarexx: SettingArexx) {
     exec("chmod +x "+this.pathRfusb)

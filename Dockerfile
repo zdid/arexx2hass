@@ -6,7 +6,6 @@ COPY package.json .
 RUN yarn install --production
 COPY ./dist ./dist
 COPY ./config_default ./config_default 
-COPY ./linux ./linux
 COPY ./src ./s
 COPY ./LICENSE .
 

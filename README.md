@@ -38,12 +38,11 @@ services:
       - ./data:/app/data
     network_mode: host
     environment:
-      AREXX2HASS_MQTT_SERVER: localhost
-      AREXX2HASS_MQTT_USER: youruser
+      AREXX2HASS_MQTT_SERVER: ftp://localhost:1883
+      AREXX2HASS_MQTT_USERNAME: youruser
       AREXX2HASS_MQTT_PASSWORD: passwd
       TZ: Europe/Paris
     restart: unless-stopped
-    net
 ```
 customize the contents of "volumes" and "environment".
 
@@ -75,32 +74,36 @@ A template of the rulefile.txt file is present in the data directory after the f
 
 #### Installation with a BS5xx
 The BS5xx must be connected to a rpi (32 bits, arm/v6 or arm/V7, not on arm64) (RPI 3 4 5 on arm64 distribution not run) (incident is submit to Arexx))
-On the arexx site you have to download the specific module rf_usb_http_rpi_0_6 https://arexx.nl/com-old/templogger/html/nl/software.php (also present in the linux directory). 
+Do not run with Docker
+
+1) Without docker on ARMv7 architecture
+set "isusb" in config.yml
+restart arexx2hass
+
+2) On an independent machine of arexx2ass: armv7 or armv6 architecture
+On the arexx site you have to download the specific module rf_usb_http_rpi_0_6 https://arexx.nl/com-old/templogger/html/nl/software.php (also present in the rf_usb_http_rpi_0_6 directory). 
 
 As for the BS1xxx the rulefile.txt file is necessary but also the device.xml file.
 
-From linux directory, copy rf_usb_http_rpi_0_6 to /root directory of rpi.
-Also copy rf.service.
-
-You modify the file rulefile.txt in rf_usb_http_rpi_0_6 directory, (line E) set address of arexx2hass 
-
-Pass command:
-\# systemctl enable /root/rf.service
-\# systemctl start rf 
+From rf_usb_http_rpi_0_6 directory:
+- Copy rf_usb_http_rpi_0_6 directory to /root directory of rpi.
+- You modify the file rulefile.txt , (line E): set address of arexx2hass 
+- send commands:
+-- \# systemctl enable /root/rf_usb_http_rpi_0_6/rf.service
+-- \# systemctl start rf 
 
 
 ### Configuration
 File: config.yml in data directory
 ```bibtex
-loglevel: debug  # change on HA ArexxBridge debug info warn error 
+loglevel: info  # change on HA ArexxBridge debug info warn error 
 homeassistant: # Parms for Home assistant 
   discovery: true  # change on HA ArexxBridge 
   base_topic: arexx2hass
   discovery_bridge_unique_id: ArexxBridge_000001 
   topics: # Do not modify topic templates
     discovery: homeassistant/device/%discovery_bridge_unique_id%/%device_unique_id%/config
-    command: "%base_topic%/%discovery_bridge_unique_id%/%device_unique_id%/%command\
-      type%"
+    command: "%base_topic%/%discovery_bridge_unique_id%/%device_unique_id%/%commandtype%"
     state: "%base_topic%/%discovery_bridge_unique_id%/%device_unique_id%/state"
     will: "%base_topic%/%discovery_bridge_unique_id%/status"
     homeassistant_availability: homeassistant/status
@@ -116,8 +119,9 @@ mqtt:
 arexx:
   address: XX.XX.XX.XX # Not recommended for BS1000, change on HA ArexxBridge 
   httpserv_port: 49161
-  isusb: false # When Arexx has corrected the problem, to activate the BS5xx directly on the same machine
-  #      change on HA ArexxBridge 
+  # isusb: false # Only works outside of docker for BS5XX hardware. 
+  #        "true" allows you to run the rf_usb_http.elf program from arexx2hass with localhost parameter
+  
   
 ```
 
