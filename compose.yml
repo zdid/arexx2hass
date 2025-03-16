@@ -14,7 +14,7 @@ services:
     volumes:
       - ../config:/app/data
     environment:
-      AREXX2HASS_MQTT_SERVER: localhost
+      AREXX2HASS_MQTT_SERVER: mqtt://localhost
       TZ: Europe/Paris
     restart: unless-stopped 
     #devices:

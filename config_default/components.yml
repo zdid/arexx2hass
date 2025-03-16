@@ -4,7 +4,7 @@ device:
     device_class: temperature
     state_class: measurement
     icon: mdi:thermometer
-    name: ""
+    #name: ""
     unit_of_measurement: °C
     value_template: "{{ value_json.value }}"
   date:
@@ -37,7 +37,7 @@ device:
     device_class: humidity
     state_class: measurement
     icon: mdi:humidity
-    name: ""
+    #name: ""
     unit_of_measurement: "%RH"
     value_template: "{{ value_json.value }}"
 bridge:
