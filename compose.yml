@@ -11,6 +11,7 @@ services:
         - "linux/amd64"
         - "linux/arm64" 
         - "linux/armhf"
+    network_mode: host
     volumes:
       - ../config:/app/data
     environment:
