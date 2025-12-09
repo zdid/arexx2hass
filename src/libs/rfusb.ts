@@ -27,7 +27,7 @@ export class RfUsb {
       log.error(`stderr: ${data}`);
     });
     this.command.stdout.on('data', (data) => {
-      log.debug(`stdout: ${data}`);
+      if(log.isDebug())log.debug(`stdout: ${data}`);
     });
 
     this.command.on('close', (code) => {

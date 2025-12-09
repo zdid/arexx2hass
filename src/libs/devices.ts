@@ -129,7 +129,7 @@ export class Devices {
             &&  this.config.homeassistant.discovery) {
                 let dev : SettingDevice = {
                     unique_id : evt.unique_id,
-                    name:'',
+                    //name:'',
                     transmit: false,
                     suggested_area: '', 
                     except: {

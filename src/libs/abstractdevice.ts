@@ -31,8 +31,8 @@ export class AbstractDevice   { //implements MqttEventListener{
   protected devicename: string;
   
   
-  constructor(mqtt: Mqtt,  config : SettingHass, unique_id : string, name:string = ''){
-    if(logger.isDebug())logger.debug(`confhass: ${config}`)
+  constructor(mqtt: Mqtt,  config : SettingHass, unique_id : string, devicename:string = ''){
+    if(logger.isDebug())logger.debug(`AbstractDevice constructor for device ${unique_id}, devicename ${devicename}`)
     this.mqtt = mqtt;
     this.topics2Subscribe = [];
     this.isFirstTime = true;
@@ -45,7 +45,7 @@ export class AbstractDevice   { //implements MqttEventListener{
     if( !AbstractDevice.config) {
         AbstractDevice.config = config;
     }
-    this.devicename= name;
+    this.devicename= devicename;
     this.topics = {
       state : AbstractDevice.getTopicCompleteName('state',unique_id),
       will: AbstractDevice.getTopicCompleteName('will',unique_id),
@@ -53,9 +53,9 @@ export class AbstractDevice   { //implements MqttEventListener{
     }
   }
   
-  protected setName(name: string) {
-    this.devicename = name
-  }
+  // protected setName(name: string) {
+  //   this.devicename = name
+  // }
    
   
 
@@ -125,7 +125,7 @@ export class AbstractDevice   { //implements MqttEventListener{
       device: {
         identifiers: [ this.unique_id ],
         //object_id :  this.devicename || 'inconnu',
-        name : this.devicename || 'inconnu',
+        name : this.devicename || 'Baromètre',
         manufacturer : "Arexx",
         model : model,
         sw: getArexx2HassVersion(),
@@ -149,8 +149,8 @@ export class AbstractDevice   { //implements MqttEventListener{
       if(! component.name && component.name != '') {
          component.name = componentName
       }
-      component.object_id = component.entity_id = (suggested_area+'_'+this.devicename+'_'+componentName+'_'+this.unique_id)
-                            .toLocaleLowerCase()
+      component.default_entity_id = /* component.entity_id = */ (component.name+"."+suggested_area+'_'/*+this.devicename*/
+        +'_'+componentName+'_'+this.unique_id).toLocaleLowerCase()
       component.id = component.entity_id
       for(let dataname in component) {
        if(dataname.includes('topic')) {

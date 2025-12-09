@@ -1,3 +1,4 @@
+import { json } from "body-parser";
 import { AbstractDevice } from "./abstractdevice";
 import { evenements, KONST } from "./controller";
 import { Logger, LogLevel } from "./logger";
@@ -25,6 +26,7 @@ export class BridgeDevice extends AbstractDevice{
 
     constructor(mqtt: Mqtt, config: SettingConfig) {
         super(mqtt,config.homeassistant,config.homeassistant.discovery_bridge_unique_id, 'ArexxBridge');
+        if(logger.isDebug())logger.debug(`BridgeDevice constructor ${JSON.stringify(config,null,4)}`)
         this.configG = config;
         this.confHass = config.homeassistant;
         this.mqtt = mqtt;
@@ -73,7 +75,7 @@ export class BridgeDevice extends AbstractDevice{
         }
     }    
     publishAllDiscovery(): void {
-        this.publishDiscoveryAll('bridge',this.datanames,'Arexx','infra');
+        this.publishDiscoveryAll('bridge',this.datanames,'Bridge Arexx','Arexx Bridge');
         this.publishState(this.bridgeValues)
     }
 }

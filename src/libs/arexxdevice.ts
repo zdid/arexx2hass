@@ -9,7 +9,7 @@ export class ArexxDevice extends AbstractDevice {
     device: SettingDevice;
     
     constructor( mqtt : Mqtt, confHass: SettingHass,device: SettingDevice) {
-        super(mqtt, confHass, device.unique_id, device.name);
+        super(mqtt, confHass, device.unique_id);//, device.name);
         this.device = device;
         this.datanames=['date','dbm'];
         if(device.except.humidity) {

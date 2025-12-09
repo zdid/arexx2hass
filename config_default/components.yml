@@ -4,20 +4,20 @@ device:
     device_class: temperature
     state_class: measurement
     icon: mdi:thermometer
-    #name: ""
+    name: ""
     unit_of_measurement: °C
     value_template: "{{ value_json.value }}"
   date:
     platform: sensor
     device_class: timestamp
-    entity_category: diagnostic
+    #entity_category: diagnostic
     icon: mdi:date
     name: date
     unit_of_measurement: ""
   dbm:
     platform: sensor
     device_class: signal_strength
-    entity_category: diagnostic
+    #entity_category: diagnostic
     icon: mdi:dbm
     name: dBm
     unit_of_measurement: dBm
@@ -28,7 +28,7 @@ device:
     platform: sensor
     device_class: signal_strength
     state_class: measurement
-    entity_category: diagnostic
+    #entity_category: diagnostic
     icon: mdi:signal
     name: Rssi
     unit_of_measurement: "%"
@@ -37,26 +37,26 @@ device:
     device_class: humidity
     state_class: measurement
     icon: mdi:humidity
-    #name: ""
+    name: ""
     unit_of_measurement: "%RH"
     value_template: "{{ value_json.value }}"
 bridge:
   receivertype:
     platform: sensor
-    entity_category: diagnostic
+    #entity_category: diagnostic
     name: Receiver
     enabled_by_default: true
     value_template: "{{ value_json.receivertype }}"
   address:
     platform: text
-    entity_category: config
+    #entity_category: config
     name: Bs1000 address 
     enabled_by_default: true
     value_template: "{{ value_json.address }}"
     command_topic: setaddress
   version:
     name: 'Version Arexx2hass:' 
-    entity_category: diagnostic
+    #entity_category: diagnostic
     platform: sensor
     enabled_by_default: true
     value_template: "{{ value_json.version }}"
@@ -64,7 +64,7 @@ bridge:
     platform: switch
     name: A) Discovery Mode 
     enabled_by_default: true
-    entity_category: config
+    #entity_category: config
     value_template: "{{ value_json.discovery }}"
     payload_off: false
     payload_on: true
@@ -73,7 +73,7 @@ bridge:
     command_topic: setdiscovery
   loglevel:
     platform: select
-    entity_category: config
+    #entity_category: config
     name: Log Level
     enabled_by_default: true
     value_template: "{{ value_json.loglevel }}"
@@ -87,8 +87,8 @@ bridge:
 newarexx:
   exists_choice:
     platform: select
-    entity_category: config
-    name: A Select Arexx device
+    #entity_category: config
+    name: A) Select Arexx device
     enabled_by_default: true
     value_template: "{{ value_json.exists_choice }}"
     device_class: enum
@@ -97,19 +97,19 @@ newarexx:
       - 'Arexx-8266'
   unique_id:  
     platform: sensor
-    entity_category: diagnostic
+    #entity_category: diagnostic
     name: unique id
     enabled_by_default: true
     value_template: "{{ value_json.unique_id }}"
   type:  
     platform: sensor
-    entity_category: diagnostic
+    #entity_category: diagnostic
     name: Type
     enabled_by_default: true
     value_template: "{{ value_json.type }}"
   name:  
     platform: text
-    entity_category: config
+    #entity_category: config
     name: G) Name
     enabled_by_default: true
     value_template: "{{ value_json.name }}"
@@ -117,16 +117,16 @@ newarexx:
 
   suggested_area:
     platform: text
-    entity_category: config
-    name: I) Suggested Area
+    #entity_category: config
+    name: B) Suggested Area
     enabled_by_default: true
     value_template: "{{ value_json.suggested_area }}"
     device_class: null
     command_topic: setsuggested_area
   clicvalid:
     platform: button
-    entity_category: config
-    name: L) Add/Modify
+    #entity_category: config
+    name: E) Add/Modify
     enabled_by_default: true
     value: false
     payload_off: false
@@ -136,8 +136,8 @@ newarexx:
     command_topic: setclicvalid
   clicdelete:
     platform: button
-    entity_category: config
-    name: M) Delete
+    #entity_category: config
+    name: F) Delete
     enabled_by_default: true
     value_template: false
     payload_off: false
@@ -147,7 +147,7 @@ newarexx:
     command_topic: setclicdelete
   message:
     platform: sensor
-    entity_category: diagnostic
+    #entity_category: diagnostic
     name: message
     enabled_by_default: true
     value_template: "{{ value_json.message }}" 

@@ -138,7 +138,7 @@ export class Controller implements MqttEventListener {
             AbstractDevice.getTopicCompleteName('homeassistant_availability','','',this.config.homeassistant)];
     }
     onMQTTMessage(data: MQTTMessage) {
-        log.debug(`receive from mqtt ${JSON.stringify(data)}`)
+        log.info(`receive from mqtt ${JSON.stringify(data)}`)
         if(AbstractDevice.getTopicCompleteName('homeassistant_availability','') ==data.topic) {
             this.avaibilityHomeAssistant(data)
             return;
@@ -147,7 +147,7 @@ export class Controller implements MqttEventListener {
         let elementaryTopic = topicSplit[this.indexElementaryTopic];
         data.topic = elementaryTopic
         data.command = topicSplit[this.indexCommand];
-        log.debug(`receive from mqtt data: ${JSON.stringify(data)}`)
+        log.info(`receive from mqtt data: ${JSON.stringify(data)}`)
         if(!data.command || data.command === 'state' ) {
             return;
         }

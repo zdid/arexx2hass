@@ -9,7 +9,7 @@ const logger = new Logger(__filename)
 interface iNad  {
     exists_choice:  string;
     unique_id:      string;
-    name:           string;
+    //name:           string;
     suggested_area: string;
     type:           string;
     message:        string;
@@ -24,12 +24,12 @@ export class NewArexxDevice extends AbstractDevice {
     constructor(mqtt: Mqtt, confHass: SettingHass, devices: Devices) {
         super(mqtt,confHass,NEWAREXX,'New Arexx');
         this.devices = devices;
-        this.datanames = ['exists_choice','name', 'suggested_area', 
+        this.datanames = ['exists_choice',/* 'name',*/ 'suggested_area', 
             'clicvalid', 'clicdelete','clicclear', 'unique_id','message'] ;
         this.choiceDevice = { 
             exists_choice:  '',
             unique_id:      '',      
-            name:           '',
+            //name:           '',
             suggested_area: '',
             type:           '',
             message:        ''
@@ -37,7 +37,7 @@ export class NewArexxDevice extends AbstractDevice {
         this.deviceChoisi = {
             unique_id : '',
             except: {temperature: true, humidity: true},
-            name:'',
+            //name:'',
             transmit:false,
             suggested_area:''
         }
@@ -53,7 +53,7 @@ export class NewArexxDevice extends AbstractDevice {
         this.choiceDevice = { 
             exists_choice:  '',
             unique_id:      '',
-            name:           '',
+            //name:           '',
             suggested_area: '',
             type:           '',
             message:        ''
@@ -68,7 +68,7 @@ export class NewArexxDevice extends AbstractDevice {
             this.choiceDevice = {
                 exists_choice:  device.unique_id,
                 unique_id:      device.unique_id,
-                name:           device.name,
+                //name:           device.name,
                 suggested_area: device.suggested_area || '',
                 type:           device.except.humidity?'Temperature': 'Humidity',
                 message:        ''
@@ -88,15 +88,15 @@ export class NewArexxDevice extends AbstractDevice {
                     fSendDiscovery = true;
                 }
             break;
-            case 'setname' :
-                this.choiceDevice.name = data.message;
-            break;
+            // case 'setname' :
+            //     this.choiceDevice.name = data.message;
+            // break;
             case 'setsuggested_area' :
                 this.choiceDevice.suggested_area = data.message;
-            break;
+                break;
             case 'setclicvalid' :
                 this.validateDevice();
-            break;
+                break;
             case 'setclicdelete' :
                 if(this.choiceDevice.exists_choice ) {
                     this.devices.deleteDevice(this.choiceDevice.unique_id);
@@ -115,14 +115,14 @@ export class NewArexxDevice extends AbstractDevice {
     private verifDevice() {
         let ano = '';
         if(logger.isDebug())logger.debug(`device en saisie ${JSON.stringify(this.choiceDevice)}`)
-        this.choiceDevice.name =(this.choiceDevice.name??'').trim() 
+        //this.choiceDevice.name =(this.choiceDevice.name??'').trim() 
         this.choiceDevice.suggested_area =(this.choiceDevice.suggested_area??'').trim() 
         if( ! this.choiceDevice.suggested_area) {
             ano = "suggested area is mandatory"
         }
-        if( ! this.choiceDevice.name) {
-            ano = "name is mandatory"
-        }
+        // if( ! this.choiceDevice.name) {
+        //     ano = "name is mandatory"
+        // }
         if(!this.choiceDevice.unique_id) {
             ano = 'Select a choice'
         }
@@ -135,7 +135,7 @@ export class NewArexxDevice extends AbstractDevice {
             this.choiceDevice.message = ano;
         } else {
             let temp : SettingDevice = {
-                name: this.choiceDevice.name,
+                //name: this.choiceDevice.name,
                 suggested_area: this.choiceDevice.suggested_area,
                 transmit:true,
                 except: this.deviceChoisi.except ,
@@ -147,6 +147,6 @@ export class NewArexxDevice extends AbstractDevice {
         }
     }
     publishAllDiscovery() {
-        this.publishDiscoveryAll('newarexx',this.datanames,'Arexx','')
+        this.publishDiscoveryAll('newarexx',this.datanames,'NewArexx','Arexx: new')
     }
 }

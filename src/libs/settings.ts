@@ -1,5 +1,7 @@
+import logger from "./logger";
+
 export interface SettingDevice {
-    name: string;
+    //name: string;
     unique_id: string;
     except:  { 
         humidity : boolean ; 
@@ -88,4 +90,20 @@ export function applyEnvironmentVariables(settings: SettingConfig): void {
             }
         }
     });
+
+    const arexxEnvVars = [
+        {env: "AREXX2HASS_AREXX_ADDRESS", props: "address"},
+        {env: "AREXX2HASS_AREXX_PORT_DIST", props: "port_dist"},
+        {env: "AREXX2HASS_AREXX_HTTPSERV_PORT", props: "httpserv_port"},
+        {env: "AREXX2HASS_AREXX_ISUSB", props: "isusb"}
+    ];
+    arexxEnvVars.forEach( envEntry => {
+        if (process.env[envEntry.env]) {
+            if(settings.arexx !== undefined){
+                // @ts-ignore
+                settings.arexx[envEntry.props] = process.env[envEntry.env];
+            }
+        }
+    });
+
 }
